@@ -1,0 +1,2 @@
+[17-Apr-2019 01:30:42 UTC] PHP Fatal error:  Cannot redeclare App\Review::companies() in /home/ubuntu/workspace/cms/app/Review.php on line 19
+[17-Apr-2019 01:35:21 UTC] PHP Fatal error:  Cannot redeclare App\Review::company() in /home/ubuntu/workspace/cms/app/Review.php on line 19
