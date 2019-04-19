@@ -42,7 +42,20 @@ Route::get('/position', function () {
 Route::post('/reviews', function (Request $request) {
     //バリデーション
     $validator = Validator::make($request->all(), [
-        'company_name' => 'required|min:2|max:255',
+    'company_name' => 'required|min:1|max:255',
+    // 'company_id' => 'required|min:1|max:255',
+    // 'user_id' => 'required|min:1|max:255',
+    'employemt_type' => 'required|min:1|max:255',
+    'enrollment_status' => 'required|min:1|max:255',
+    'work_env_rate' => 'required|min:1|max:255',
+    'employee_evaluation_rate' => 'required|min:1|max:255',
+    'careerup_rate' => 'required|min:1|max:255',
+    'gap_rate' => 'required|min:1|max:255',
+    'growth_rate' => 'required|min:1|max:255',
+    'gender_equality_rate' => 'required|min:1|max:255',
+    'c_and_b_rate' => 'required|min:1|max:255',
+    'compliance_rate' => 'required|min:1|max:255',
+        
     ]);
     //ハリテーション:エラー。セッション値を保存したまま、入力ページへ戻る
     if ($validator->fails()) {
@@ -55,37 +68,39 @@ Route::post('/reviews', function (Request $request) {
     $reviews->company_name = $request->company_name;
     $reviews->company_id = '1';
     $reviews->user_id = '1';
-    $reviews->employment_type = '正社員';
-    $reviews->enrollment_status = '在職';
-    $reviews->year_entry = '2018';
-    $reviews->year_resignation = '1';
-    $reviews->work_location = '1';
-    $reviews->review_function = '1';
-    $reviews->review_division = '1';
-    $reviews->review_position = '1';
-    $reviews->user_gender = '1';
-    $reviews->work_env_rate = '1';
-    $reviews->screening_rate = '1';
-    $reviews->careerup_rate = '1';
-    $reviews->gap_rate = '1';
-    $reviews->growth_rate = '1';
-    $reviews->gender_equality_rate = '1';
-    $reviews->c_and_b_rate = '1';
-    $reviews->compliance_rate = '1';
-    $reviews->overtime = '1';
-    $reviews->pdo_consumption = '1';
-    $reviews->work_env = '1';
-    $reviews->screening = '1';
-    $reviews->careerup = '1';
-    $reviews->gap = '1';
-    $reviews->growth = '1';
-    $reviews->gender_equality = '1';
-    $reviews->c_and_b = '1';
-    $reviews->compliance = '1';
+    $reviews->employment_type = $request->employment_type;
+    $reviews->enrollment_status = $request->enrollment_status;
+    $reviews->review_function = $request->review_function;
+    $reviews->review_division = $request->review_division;
+    $reviews->review_position = $request->review_position;;
+    $reviews->work_env_rate = $request->work_env_rate;
+    $reviews->employee_evaluation_rate = $request->employee_evaluation_rate;
+    $reviews->careerup_rate = $request->careerup_rate;
+    $reviews->gap_rate = $request->gap_rate;
+    $reviews->growth_rate = $request->growth_rate;
+    $reviews->gender_equality_rate = $request->gender_equality_rate;
+    $reviews->c_and_b_rate = $request->c_and_b_rate;
+    $reviews->compliance_rate = $request->compliance_rate;
+    $reviews->overtime = $request->overtime;
+    $reviews->pdo_consumption = $request->pdo_consumption;
+    $reviews->work_env = $request->work_env;
+    $reviews->screening = $request->screening;
+    $reviews->careerup = $request->careerup;
+    $reviews->gap = $request->gap;
+    $reviews->growth = $request->growth;
+    $reviews->gender_equality = $request->gender_equality;
+    $reviews->c_and_b = $request->c_and_b;
+    $reviews->compliance = $request->compliance;
 
     $reviews->save(); 
     //「/」ルートにリダイレクト
     return redirect('/');
+});
+
+//更新画面
+Route::post('/reviewsedit/{reviews}', function(Review $reviews) {
+    //{reviews}id 値を取得 => Review $reviews id 値1レコード取得
+    return view('reviewsedit', ['review' => $reviews]);
 });
 
 /**
@@ -119,7 +134,8 @@ Route::post('/review/{review}', function (Review $review) {
 * 会社を削除 
 */
 Route::post('/company/{company}', function (Review $company) {
-    //
+    $company->delete();
+    return redirect('/');
 });
 
 /**
@@ -127,7 +143,8 @@ Route::post('/company/{company}', function (Review $company) {
 * 求職案件を削除 
 */
 Route::post('/position/{position}', function (Review $position) {
-    //
+    $position->delete();
+    return redirect('/');
 });
 
 

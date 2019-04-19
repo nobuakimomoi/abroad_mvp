@@ -154,7 +154,7 @@
         <div class="well well-sm">
             <button type="submit" class="btn btn-primary">Save</button>
             <a class="btn btn-link pull-right" href="{{ url('/') }}">
-            <i class="glyphicon glyphicon-backward"></i>Back
+            <i class="glyphicon glyphicon-backward"></i>  Back
             </a>
         </div>
         <!--/ Saveボタン/Backボタン -->

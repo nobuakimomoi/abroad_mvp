@@ -20,15 +20,11 @@ class CreateReviewsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('employment_type');
             $table->string('enrollment_status');
-            $table->integer('year_entry');
-            $table->integer('year_resignation')->nullable();
-            $table->string('work_location');            
             $table->string('review_function')->nullable();
             $table->string('review_division')->nullable();
             $table->string('review_position')->nullable();
-            $table->string('user_gender');
             $table->integer('work_env_rate');
-            $table->integer('screening_rate');
+            $table->integer('employee_evaluation_rate');
             $table->integer('careerup_rate');
             $table->integer('gap_rate');
             $table->integer('growth_rate');

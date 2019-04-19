@@ -1,0 +1,315 @@
+[1mdiff --git a/database/migrations/2019_04_10_011412_create_reviews_table.php b/database/migrations/2019_04_10_011412_create_reviews_table.php[m
+[1mindex 8e06354..c97a3b7 100644[m
+[1m--- a/database/migrations/2019_04_10_011412_create_reviews_table.php[m
+[1m+++ b/database/migrations/2019_04_10_011412_create_reviews_table.php[m
+[36m@@ -20,15 +20,11 @@[m [mclass CreateReviewsTable extends Migration[m
+             $table->integer('user_id')->unsigned();[m
+             $table->string('employment_type');[m
+             $table->string('enrollment_status');[m
+[31m-            $table->integer('year_entry');[m
+[31m-            $table->integer('year_resignation')->nullable();[m
+[31m-            $table->string('work_location');            [m
+             $table->string('review_function')->nullable();[m
+             $table->string('review_division')->nullable();[m
+             $table->string('review_position')->nullable();[m
+[31m-            $table->string('user_gender');[m
+             $table->integer('work_env_rate');[m
+[31m-            $table->integer('screening_rate');[m
+[32m+[m[32m            $table->integer('employee_evaluation_rate');[m
+             $table->integer('careerup_rate');[m
+             $table->integer('gap_rate');[m
+             $table->integer('growth_rate');[m
+[1mdiff --git a/resources/views/reviews.blade.php b/resources/views/reviews.blade.php[m
+[1mindex 6c36ab7..fab9fcf 100644[m
+[1m--- a/resources/views/reviews.blade.php[m
+[1m+++ b/resources/views/reviews.blade.php[m
+[36m@@ -9,18 +9,136 @@[m
+         @include('common.errors')[m
+         <!-- バリデーションエラーの表示に使用-->[m
+         [m
+[31m-        <!-- 本登録フォーム -->[m
+[32m+[m[32m        <!-- クチコミ登録フォーム -->[m
+         <form action="{{ url('reviews') }}" method="POST" class="form-horizontal">[m
+             {{ csrf_field() }}[m
+             [m
+[31m-            <!-- 本のタイトル -->[m
+             <div class="form-group">[m
+                 <label for="review" class="col-sm-3 control-label">Review</label>[m
+[31m-    [m
+[31m-    <div class="col-sm-6">[m
+[31m-        <input type="text" class="form-control" name='company_name' value = "{{ old('company_name') }}" placeholder="企業名を記入">[m
+[31m-    </div>[m
+[31m-</div>[m
+[32m+[m[32m                <div class="col-sm-6">[m
+[32m+[m[32m                    <div class="col-sm-6" style="width:90%">[m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Company name</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='company_name' value = "{{ old('company_name') }}" placeholder="Enter company name">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m                        [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Employment type</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='employment_type' value = "{{ old('employment_type') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Enrollment status</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='enrollment_status' value = "{{ old('enrollment_status') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Function name</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='review_function' value = "{{ old('review_function') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Division name</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='review_division' value = "{{ old('review_division') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Position name</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='position_name' value = "{{ old('position_name') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Working environment for international talents</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='work_env_rate' value = "{{ old('work_env_rate') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Employee evaluation</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='employee_evaluation_rate' value = "{{ old('employee_evaluation_rate') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Career up</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='careerup_rate' value = "{{ old('careerup_rate') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Consistency of the job discription and the actual asignment</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='gap_rate' value = "{{ old('gap_rate') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Environment for employee growth</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='growth_rate' value = "{{ old('growth_rate') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Gender equality</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='gender_equality_rate' value = "{{ old('gender_equality_rate') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Compensations and benefits</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='c_and_b_rate' value = "{{ old('c_and_b_rate') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Compliance</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='compliance_rate' value = "{{ old('compliance_rate') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Overtime</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='overtime' value = "{{ old('overtime') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Paid day off consumption per year</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='pdo_consumption' value = "{{ old('pdo_consumption') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Work environment for international talents</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='work_env' value = "{{ old('work_env') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Screening</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='screening' value = "{{ old('screening') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Career up</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='careerup' value = "{{ old('careerup') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Consistency of the job discription and the actual asignment</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='gap' value = "{{ old('gap') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Environment for employee growth</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='growth' value = "{{ old('growth') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">gender_equality</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='gender_equality' value = "{{ old('gender_equality') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Compensations and benefits</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='c_and_b' value = "{{ old('c_and_b') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[41m            [m
+[32m+[m[32m                        <div>[m
+[32m+[m[32m                            <label for="review" class="col-sm-3 control-label">Compliance</label>[m
+[32m+[m[32m                            <input type="text" class="form-control" name='compliance' value = "{{ old('compliance') }}" placeholder="">[m
+[32m+[m[32m                        </div>[m[41m    [m
+[32m+[m[32m                </div>[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m        </div>[m
+                 [m
+             <!-- クチコミ登録ボタン -->[m
+             <div class="form-group">[m
+[36m@@ -36,13 +154,13 @@[m
+      @if (count($reviews) > 0)[m
+          <div class="panel panel-default">[m
+                 <div class="panel-heading"> [m
+[31m-                    現在のクチコミ[m
+[32m+[m[32m                    Recent reviews[m
+                 </div>[m
+                 <div class="panel-body">[m
+                 <table class="table table-striped task-table">[m
+                     <!-- テーブルヘッダ -->[m
+                     <thead>[m
+[31m-                        <th>クチコミ一覧</th>[m
+[32m+[m[32m                        <th></th>[m
+                         <th>&nbsp;</th>[m
+                     </thead>[m
+                     <!-- テーフル本体 -->[m
+[36m@@ -53,6 +171,14 @@[m
+                                 <td class="table-text">[m
+                                     <div>{{ $review->company_name }}</div>[m
+                                 </td>[m
+[32m+[m[32m                                <!-- クチコミ : 更新ボタン -->[m[41m [m
+[32m+[m[32m                                <td>[m
+[32m+[m[32m                                <form action="{{ url('reviewsedit/'.$review->id) }}" method="POST">[m
+[32m+[m[32m                                    {{ csrf_field() }}[m
+[32m+[m[32m                                    <button type="submit" class="btn btn-primary">[m
+[32m+[m[32m                                    <i class="glyphicon glyphicon-pencil"></i> Edit </button>[m
+[32m+[m[32m                                </form>[m
+[32m+[m[32m                                            </td>[m
+                                 <!-- クチコミ:削除ホタン -->[m
+                                 <td>[m
+                                <form action="{{ url('review/'.$review->id) }}" method="POST">[m
+[1mdiff --git a/routes/web.php b/routes/web.php[m
+[1mindex ca89780..9a3d3e4 100644[m
+[1m--- a/routes/web.php[m
+[1m+++ b/routes/web.php[m
+[36m@@ -42,7 +42,20 @@[m [mRoute::get('/position', function () {[m
+ Route::post('/reviews', function (Request $request) {[m
+     //バリデーション[m
+     $validator = Validator::make($request->all(), [[m
+[31m-        'company_name' => 'required|min:2|max:255',[m
+[32m+[m[32m    'company_name' => 'required|min:1|max:255',[m
+[32m+[m[32m    // 'company_id' => 'required|min:1|max:255',[m
+[32m+[m[32m    // 'user_id' => 'required|min:1|max:255',[m
+[32m+[m[32m    'employemt_type' => 'required|min:1|max:255',[m
+[32m+[m[32m    'enrollment_status' => 'required|min:1|max:255',[m
+[32m+[m[32m    'work_env_rate' => 'required|min:1|max:255',[m
+[32m+[m[32m    'employee_evaluation_rate' => 'required|min:1|max:255',[m
+[32m+[m[32m    'careerup_rate' => 'required|min:1|max:255',[m
+[32m+[m[32m    'gap_rate' => 'required|min:1|max:255',[m
+[32m+[m[32m    'growth_rate' => 'required|min:1|max:255',[m
+[32m+[m[32m    'gender_equality_rate' => 'required|min:1|max:255',[m
+[32m+[m[32m    'c_and_b_rate' => 'required|min:1|max:255',[m
+[32m+[m[32m    'compliance_rate' => 'required|min:1|max:255',[m
+[32m+[m[41m        [m
+     ]);[m
+     //ハリテーション:エラー。セッション値を保存したまま、入力ページへ戻る[m
+     if ($validator->fails()) {[m
+[36m@@ -55,39 +68,41 @@[m [mRoute::post('/reviews', function (Request $request) {[m
+     $reviews->company_name = $request->company_name;[m
+     $reviews->company_id = '1';[m
+     $reviews->user_id = '1';[m
+[31m-    $reviews->employment_type = '正社員';[m
+[31m-    $reviews->enrollment_status = '在職';[m
+[31m-    $reviews->year_entry = '2018';[m
+[31m-    $reviews->year_resignation = '1';[m
+[31m-    $reviews->work_location = '1';[m
+[31m-    $reviews->review_function = '1';[m
+[31m-    $reviews->review_division = '1';[m
+[31m-    $reviews->review_position = '1';[m
+[31m-    $reviews->user_gender = '1';[m
+[31m-    $reviews->work_env_rate = '1';[m
+[31m-    $reviews->screening_rate = '1';[m
+[31m-    $reviews->careerup_rate = '1';[m
+[31m-    $reviews->gap_rate = '1';[m
+[31m-    $reviews->growth_rate = '1';[m
+[31m-    $reviews->gender_equality_rate = '1';[m
+[31m-    $reviews->c_and_b_rate = '1';[m
+[31m-    $reviews->compliance_rate = '1';[m
+[31m-    $reviews->overtime = '1';[m
+[31m-    $reviews->pdo_consumption = '1';[m
+[31m-    $reviews->work_env = '1';[m
+[31m-    $reviews->screening = '1';[m
+[31m-    $reviews->careerup = '1';[m
+[31m-    $reviews->gap = '1';[m
+[31m-    $reviews->growth = '1';[m
+[31m-    $reviews->gender_equality = '1';[m
+[31m-    $reviews->c_and_b = '1';[m
+[31m-    $reviews->compliance = '1';[m
+[32m+[m[32m    $reviews->employment_type = $request->employment_type;[m
+[32m+[m[32m    $reviews->enrollment_status = $request->enrollment_status;[m
+[32m+[m[32m    $reviews->review_function = $request->review_function;[m
+[32m+[m[32m    $reviews->review_division = $request->review_division;[m
+[32m+[m[32m    $reviews->review_position = $request->review_position;;[m
+[32m+[m[32m    $reviews->work_env_rate = $request->work_env_rate;[m
+[32m+[m[32m    $reviews->employee_evaluation_rate = $request->employee_evaluation_rate;[m
+[32m+[m[32m    $reviews->careerup_rate = $request->careerup_rate;[m
+[32m+[m[32m    $reviews->gap_rate = $request->gap_rate;[m
+[32m+[m[32m    $reviews->growth_rate = $request->growth_rate;[m
+[32m+[m[32m    $reviews->gender_equality_rate = $request->gender_equality_rate;[m
+[32m+[m[32m    $reviews->c_and_b_rate = $request->c_and_b_rate;[m
+[32m+[m[32m    $reviews->compliance_rate = $request->compliance_rate;[m
+[32m+[m[32m    $reviews->overtime = $request->overtime;[m
+[32m+[m[32m    $reviews->pdo_consumption = $request->pdo_consumption;[m
+[32m+[m[32m    $reviews->work_env = $request->work_env;[m
+[32m+[m[32m    $reviews->screening = $request->screening;[m
+[32m+[m[32m    $reviews->careerup = $request->careerup;[m
+[32m+[m[32m    $reviews->gap = $request->gap;[m
+[32m+[m[32m    $reviews->growth = $request->growth;[m
+[32m+[m[32m    $reviews->gender_equality = $request->gender_equality;[m
+[32m+[m[32m    $reviews->c_and_b = $request->c_and_b;[m
+[32m+[m[32m    $reviews->compliance = $request->compliance;[m
+ [m
+     $reviews->save(); [m
+     //「/」ルートにリダイレクト[m
+     return redirect('/');[m
+ });[m
+ [m
+[32m+[m[32m//更新画面[m
+[32m+[m[32mRoute::post('/reviewsedit/{reviews}', function(Review $reviews) {[m
+[32m+[m[32m    //{reviews}id 値を取得 => Review $reviews id 値1レコード取得[m
+[32m+[m[32m    return view('reviewsedit', ['review' => $reviews]);[m
+[32m+[m[32m});[m
+[32m+[m
+ /**[m
+ [m
+ * 新「会社」を追加 [m
+[36m@@ -119,7 +134,8 @@[m [mRoute::post('/review/{review}', function (Review $review) {[m
+ * 会社を削除 [m
+ */[m
+ Route::post('/company/{company}', function (Review $company) {[m
+[31m-    //[m
+[32m+[m[32m    $company->delete();[m
+[32m+[m[32m    return redirect('/');[m
+ });[m
+ [m
+ /**[m
+[36m@@ -127,7 +143,8 @@[m [mRoute::post('/company/{company}', function (Review $company) {[m
+ * 求職案件を削除 [m
+ */[m
+ Route::post('/position/{position}', function (Review $position) {[m
+[31m-    //[m
+[32m+[m[32m    $position->delete();[m
+[32m+[m[32m    return redirect('/');[m
+ });[m
+ [m
+ [m
